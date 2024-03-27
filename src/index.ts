@@ -78,6 +78,8 @@ function createLeaderboardString(ld: LeaderboardData): string {
     leaderboard += `\nRun your own ballot bot! https://github.com/a-random-lemurian/person-ranker`
     return leaderboard;
 }
+/* Bot */
+const bot = new SOB.Bot("wss://ourworldoftext.com/ws/?hide=1");
 
 setInterval(() => {
     for (let i = 0; i < cfg.refreshRateSeconds; i++) ranker.mutateAll();
