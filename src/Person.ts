@@ -49,8 +49,10 @@ export class Person {
             newScore = Math.ceil(newScore * (Math.random() * 3.3));
         }
 
+        let _increase: boolean = this.increase;
+        if (randint(1, 100) > this.trendDeviancePossibility) _increase = -_increase;
         // Apply the new score change.
-        this.score += this.increase ? newScore : -newScore;
+        this.score += _increase ? newScore : -newScore;
 
         // Cap the score at 0 or 99 million.
         if (this.score < 0) this.score = 0;
