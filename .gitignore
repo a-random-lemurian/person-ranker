@@ -17,3 +17,5 @@ build
 
 persons.json
 config.json
+
+*.db*
