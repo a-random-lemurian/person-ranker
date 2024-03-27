@@ -79,7 +79,9 @@ function createLeaderboardString(ld: LeaderboardData): string {
     leaderboard += `TOTAL VOTES: ${numberWithCommas(ranker.totalScore())}`
         .padEnd(60, " ") + "\n";
 
-    leaderboard += `Only showing first ${cfg.minimumRank} of ${ranker.persons.length} persons due to ratelimits being too slow.`
+    leaderboard += (ranker.persons.length > cfg.minimumRank)
+        ? `Only showing first ${cfg.minimumRank} of ${ranker.persons.length} persons due to ratelimits being too slow.`
+        : ``;
     leaderboard += `\nRun your own ballot bot! https://github.com/a-random-lemurian/person-ranker`
     return leaderboard;
 }
