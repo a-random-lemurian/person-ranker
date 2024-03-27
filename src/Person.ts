@@ -9,6 +9,7 @@ export class Person {
     score: number;
     increase: boolean;
     sameMutationCount: number = 0;
+    trendDeviancePossibility: number = 20;
 
     constructor(
         name: string,
