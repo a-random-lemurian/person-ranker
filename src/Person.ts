@@ -9,6 +9,7 @@ export class Person {
     score: number;
     increase: boolean;
     sameMutationCount: number = 0;
+    trendDeviancePossibility: number = 20;
 
     constructor(
         name: string,
@@ -50,7 +51,7 @@ export class Person {
         }
 
         let _increase: boolean = this.increase;
-        if (randint(1, 100) > this.trendDeviancePossibility) _increase = -_increase;
+        if (randint(1, 100) > this.trendDeviancePossibility) _increase = !_increase;
         // Apply the new score change.
         this.score += _increase ? newScore : -newScore;
 

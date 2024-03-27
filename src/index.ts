@@ -24,9 +24,6 @@ Object.keys(personsJson).forEach(p => {
     ranker.addPerson(new Person(p, personsJson[p], true))
 })
 
-/* Bot */
-const bot = new SOB.Bot("wss://ourworldoftext.com/ws/?hide=1");
-
 interface LeaderboardData {
     totalVotes: number,
     rankStrLens: number[],
@@ -70,10 +67,15 @@ function createLeaderboardString(ld: LeaderboardData): string {
 
     leaderboard += ld.persons.slice(0, cfg.minimumRank)
         .map((person: Person, idx: number): string => {
-            let spaces: number = (previousLd.rankStrLens[idx] + 1 || 60);
+            let spaces: number = 49;
+            if (previousLd) {
+                let s = previousLd.rankStrLens[idx] + 3;
+                spaces = s;
+            }
+
             const votes: string = numberWithCommas(person.score).padStart(12, " ");
             const rank: string = `${idx + 1}`.padStart(3, "0");
-            return `(${rank}) [ ${votes} ] ${person.name} `.padEnd(spaces, " ");
+            return `(${rank}) [ ${votes} ] ${person.name.padEnd(spaces + 1, " ")}`;
         }).join("\n");
 
     leaderboard += emptyLine(90) + emptyLine(90);
@@ -81,9 +83,15 @@ function createLeaderboardString(ld: LeaderboardData): string {
     leaderboard += `TOTAL VOTES: ${numberWithCommas(ranker.totalScore())}`
         .padEnd(60, " ") + "\n";
 
-    leaderboard += `Only showing first ${cfg.minimumRank} of ${ranker.persons.length} persons due to ratelimits being too slow.`
+    leaderboard += (ranker.persons.length > cfg.minimumRank)
+        ? `Only showing first ${cfg.minimumRank} of ${ranker.persons.length} persons due to ratelimits being too slow.`
+        : ``;
+    leaderboard += `\nRun your own ballot bot! https://github.com/a-random-lemurian/person-ranker`
     return leaderboard;
 }
+
+/* Bot */
+const bot = new SOB.Bot("wss://ourworldoftext.com/ws/?hide=1");
 
 setInterval(() => {
     for (let i = 0; i < cfg.refreshRateSeconds; i++) ranker.mutateAll();
@@ -104,6 +112,8 @@ setInterval(() => {
         );
     }
 
-}, cfg.refreshRateSeconds * 1000)
+}, cfg.refreshRateSeconds * 1000);
+
+previousLd = preprocessLeaderboard(ranker);
 
 console.log("ready")
