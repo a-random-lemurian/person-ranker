@@ -63,10 +63,15 @@ function createLeaderboardString(ld: LeaderboardData): string {
 
     leaderboard += ld.persons.slice(0, cfg.minimumRank)
         .map((person: Person, idx: number): string => {
-            let spaces: number = (previousLd.rankStrLens[idx] + 1 || 60);
+            let spaces: number = 49;
+            if (previousLd) {
+                let s = previousLd.rankStrLens[idx] + 3;
+                spaces = s;
+            }
+
             const votes: string = numberWithCommas(person.score).padStart(12, " ");
             const rank: string = `${idx + 1}`.padStart(3, "0");
-            return `(${rank}) [ ${votes} ] ${person.name} `.padEnd(spaces, " ");
+            return `(${rank}) [ ${votes} ] ${person.name.padEnd(spaces + 1, " ")}`;
         }).join("\n");
 
     leaderboard += emptyLine(90) + emptyLine(90);
@@ -101,6 +106,8 @@ setInterval(() => {
         );
     }
 
-}, cfg.refreshRateSeconds * 1000)
+}, cfg.refreshRateSeconds * 1000);
+
+previousLd = preprocessLeaderboard(ranker);
 
 console.log("ready")
