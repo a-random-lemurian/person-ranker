@@ -51,7 +51,7 @@ export class Person {
         }
 
         let _increase: boolean = this.increase;
-        if (randint(1, 100) > this.trendDeviancePossibility) _increase = -_increase;
+        if (randint(1, 100) > this.trendDeviancePossibility) _increase = !_increase;
         // Apply the new score change.
         this.score += _increase ? newScore : -newScore;
 
