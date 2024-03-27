@@ -20,9 +20,6 @@ Object.keys(personsJson).forEach(p => {
     ranker.addPerson(new Person(p, personsJson[p], true))
 })
 
-/* Bot */
-const bot = new SOB.Bot("wss://ourworldoftext.com/ws/?hide=1");
-
 interface LeaderboardData {
     totalVotes: number,
     rankStrLens: number[],
