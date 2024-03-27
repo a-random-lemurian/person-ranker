@@ -1,6 +1,7 @@
 import { Person } from "./Person";
 import { Ranker } from "./Ranker";
 import * as SOB from "simple-owot-bot";
+import Database from "better-sqlite3";
 
 /* Config */
 import personsJson_ from "../persons.json";
@@ -12,6 +13,9 @@ import * as fs from "fs";
 const cfg: PersonRankerConfig = new PersonRankerConfig(
     JSON.parse(fs.readFileSync("config.json", { encoding: 'utf8' }))
 );
+
+const db = new Database('log.db');
+db.pragma('journal_mode = WAL');
 
 /* Ranker */
 const ranker = new Ranker();
